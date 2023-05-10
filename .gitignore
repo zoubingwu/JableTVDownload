@@ -3,3 +3,7 @@
 *.DS_store
 *.jpg
 *.m3u8
+
+jable/
+chromedriver
+*.chromedriver

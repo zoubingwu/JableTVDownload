@@ -5,7 +5,7 @@ from functools import partial
 import concurrent.futures
 import time
 import copy
-
+import multiprocessing
 
 def scrape(ci, folderPath, downloadList, urls):
     os.path.split(urls)
@@ -48,7 +48,7 @@ def startCrawl(ci, folderPath, downloadList):
     # 同時建立及啟用 20 個執行緒
     round = 0
     while(downloadList != []):
-        with concurrent.futures.ThreadPoolExecutor(max_workers=8) as executor:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=multiprocessing.cpu_count()) as executor:
             executor.map(partial(scrape, ci, folderPath,
                                  downloadList), downloadList)
         round += 1

@@ -1,5 +1,6 @@
 import os
 import time
+
 def mergeMp4(folderPath, tsList):
 	# 開始時間
     start_time = time.time()
