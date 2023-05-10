@@ -6,4 +6,6 @@
 
 jable/
 chromedriver
+chromedriver.exe
 *.chromedriver
+.pdm-python
