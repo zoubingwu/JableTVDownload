@@ -9,33 +9,24 @@ from config import headers
 from crawler import prepareCrawl
 from merge import mergeMp4
 from delete import deleteM3u8, deleteMp4
-from cover import getCover
+from cover import getCover, getTitle
 from encode import ffmpegEncode
 from args import *
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
 def download(url):
-  encode = 0 #不轉檔
-  action = input('要轉檔嗎?(y/n)')
-  if action.lower() == 'y':
-    action = input('要用GPU(Nvidia)加速轉檔嗎?(y/n)')
-    if action.lower() == 'y':
-       encode = 1 #GPU轉檔
-    else:
-       encode = 2 #CPU轉檔
+  encode = 0
+#   action = input('要轉檔嗎?(y/n)')
+#   if action.lower() == 'y':
+#     action = input('要用GPU(Nvidia)加速轉檔嗎?(y/n)')
+#     if action.lower() == 'y':
+#        encode = 1 #GPU轉檔
+#     else:
+#        encode = 2 #CPU轉檔
 
   print('正在下載影片: ' + url)
-  # 建立番號資料夾
-  urlSplit = url.split('/')
-  dirName = urlSplit[-2]
-  if os.path.exists(f'{dirName}/{dirName}.mp4'):
-    print('番號資料夾已存在, 跳過...')
-    return
-  if not os.path.exists(dirName):
-      os.makedirs(dirName)
-  folderPath = os.path.join(os.getcwd(), dirName)
-  
+
   #配置Selenium參數
   options = Options()
   options.add_argument('--no-sandbox')
@@ -54,6 +45,17 @@ def download(url):
   m3u8urlList = m3u8url.split('/')
   m3u8urlList.pop(-1)
   downloadurl = '/'.join(m3u8urlList)
+
+  # 建立番號資料夾
+  urlSplit = url.split('/')
+  fileName = urlSplit[-2]
+  dirName = getTitle(html_file=dr.page_source)
+  if os.path.exists(f'{dirName}/{fileName}.mp4'):
+    print('番號資料夾已存在, 跳過...')
+    return
+  if not os.path.exists(dirName):
+      os.makedirs(dirName)
+  folderPath = os.path.join(os.getcwd(), dirName)
 
   # 儲存 m3u8 file 至資料夾
   m3u8file = os.path.join(folderPath, dirName + '.m3u8')
@@ -104,4 +106,4 @@ def download(url):
   getCover(html_file=dr.page_source, folder_path=folderPath)
 
   # 轉檔
-  ffmpegEncode(folderPath, dirName, encode)
+  ffmpegEncode(folderPath, fileName, encode)

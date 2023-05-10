@@ -25,3 +25,10 @@ def getCover(html_file, folder_path):
           print(f"unable to download cover: {e}")
 
   print(f"cover downloaded as {cover_name}")
+
+
+def getTitle(html_file):
+    soup = BeautifulSoup(html_file, "html.parser")
+    title = soup.select_one(".video-info .info-header .header-left h4")
+    if title is not None:
+        return title.text
