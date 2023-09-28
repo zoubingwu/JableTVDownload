@@ -1,3 +1,4 @@
+import html
 import requests
 import os
 import re
@@ -10,7 +11,6 @@ from merge import mergeMp4
 from delete import deleteM3u8, deleteMp4
 from cover import getCover, getTitle
 from encode import ffmpegEncode
-from args import *
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
@@ -29,6 +29,7 @@ def download(url):
 
     # 配置Selenium參數
     options = Options()
+    options.binary_location = "chrome-win32/chrome.exe"
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--disable-extensions")
@@ -38,9 +39,13 @@ def download(url):
     )
     dr = webdriver.Chrome(options=options)
     dr.get(url)
-    result = re.search("https://.+m3u8", dr.page_source)
+
+    result = re.search("https://\S+\.m3u8", dr.page_source)
     print(f"result: {result}")
-    m3u8url = result[0]
+    m3u8url = html.unescape(result[0])
+
+    # m3u8url = "https://qabo-ahha.mushroomtrack.com/hls/T1ATpeFTsFcJBZwe-uwObA/1695330829/0/395/395.m3u8"
+
     print(f"m3u8url: {m3u8url}")
 
     # 得到 m3u8 網址
@@ -62,6 +67,8 @@ def download(url):
 
     # 儲存 m3u8 file 至資料夾
     m3u8file = os.path.join(folderPath, dirName + ".m3u8")
+    print("m3u8url:", "\"" + m3u8url + "\"")
+    print("m3u8file", "\"" + m3u8file + "\"")
     urllib.request.urlretrieve(m3u8url, m3u8file)
 
     # 得到 m3u8 file裡的 URI和 IV

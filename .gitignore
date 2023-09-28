@@ -9,3 +9,5 @@ chromedriver
 chromedriver.exe
 *.chromedriver
 .pdm-python
+
+chrome-win32/
