@@ -43,9 +43,6 @@ def download(url):
     result = re.search("https://\S+\.m3u8", dr.page_source)
     print(f"result: {result}")
     m3u8url = html.unescape(result[0])
-
-    # m3u8url = "https://qabo-ahha.mushroomtrack.com/hls/T1ATpeFTsFcJBZwe-uwObA/1695330829/0/395/395.m3u8"
-
     print(f"m3u8url: {m3u8url}")
 
     # 得到 m3u8 網址
