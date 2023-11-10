@@ -82,9 +82,11 @@ def start_worker_process():
     worker_process = Process(target=task_worker, args=(task_queue,))
     worker_process.start()
 
+
 def get_valid_directory_name(directory_name):
     invalid_chars = r'\/:*?"<>|'
     return ''.join(char if char not in invalid_chars else '_' for char in directory_name)
+
 
 def download_m3u8(url, code, cover, title):
     folder_path = os.path.join(os.getcwd(), "downloads", title)
