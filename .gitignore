@@ -5,6 +5,7 @@
 *.m3u8
 *.log
 
+.idea/
 jable/
 chromedriver
 chromedriver.exe
@@ -13,3 +14,4 @@ chromedriver.exe
 downloads/
 chrome-win32/
 task.json
+task_backup.json
